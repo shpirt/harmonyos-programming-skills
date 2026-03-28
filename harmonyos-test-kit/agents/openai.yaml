@@ -1,0 +1,4 @@
+interface:
+  display_name: "HarmonyOS Test Kit"
+  short_description: "Official HarmonyOS unit, UI, and performance testing workflows"
+  default_prompt: "Use $harmonyos-test-kit to set up or troubleshoot HarmonyOS Test Kit unit tests, UI tests, or performance tests with official docs and samples."

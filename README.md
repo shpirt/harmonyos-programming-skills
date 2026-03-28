@@ -3,13 +3,14 @@
 中文说明：当前文件  
 English version: [README.en.md](./README.en.md)
 
-这个仓库收录了三个可复用的 HarmonyOS / OpenHarmony 编程辅助 skill：
+这个仓库收录了四个可复用的 HarmonyOS / OpenHarmony 编程辅助 skill：
 
 - `harmonyos-project-builder`
 - `harmonyos-sdk-build-deploy`
 - `harmonyos-arkts-v2-assistant`
+- `harmonyos-test-kit`
 
-它们被设计为一组协同工作的能力，分别覆盖项目搭建、官方 SDK 构建部署，以及 ArkTS / `.ets` 编写指导。
+它们被设计为一组协同工作的能力，分别覆盖项目搭建、官方 SDK 构建部署、ArkTS / `.ets` 编写指导，以及官方 Test Kit 测试工作流。
 
 ## 包含的 skill
 
@@ -56,6 +57,18 @@ English version: [README.en.md](./README.en.md)
 - `.ets` 日常编写模式
 - MVVM 与组件边界
 
+### `harmonyos-test-kit`
+
+适用于 HarmonyOS 官方 Test Kit 测试相关任务。
+
+重点覆盖：
+
+- `@ohos/hypium` 单元测试
+- `@kit.TestKit` / `@ohos.UiTest` UI 测试
+- `PerfTest` 白盒性能测试
+- `ohosTest` / `testRunner` / `module.json5` 接线
+- `aa test` 命令行执行与筛选
+
 ## 环境变量
 
 这些 skill 不依赖硬编码本地路径。
@@ -70,8 +83,8 @@ export HARMONYOS_SAMPLES_ROOT="/path/to/applications_app_samples"
 示例：
 
 ```sh
-export HARMONYOS_DOCS_ROOT="$HOME/playgroud/docs"
-export HARMONYOS_SAMPLES_ROOT="$HOME/playgroud/applications_app_samples"
+export HARMONYOS_DOCS_ROOT="$HOME/playground/docs"
+export HARMONYOS_SAMPLES_ROOT="$HOME/playground/applications_app_samples"
 ```
 
 约定如下：
@@ -88,15 +101,16 @@ export HARMONYOS_SAMPLES_ROOT="$HOME/playgroud/applications_app_samples"
 - `harmonyos-project-builder/`
 - `harmonyos-sdk-build-deploy/`
 - `harmonyos-arkts-v2-assistant/`
+- `harmonyos-test-kit/`
 
-如果你的环境使用集中式技能目录，例如 `$CODEX_HOME/skills`，直接把这三个 skill 目录放进去即可。
+如果你的环境使用集中式技能目录，例如 `$CODEX_HOME/skills`，直接把这些 skill 目录放进去即可。
 
 ## 为什么放在一个仓库里
 
-这三个 skill 共享：
+这四个 skill 共享：
 
 - 彼此之间的引用关系
 - 相同的环境变量约定
 - 一条完整的 HarmonyOS 开发工作流
 
-把它们放在同一个仓库里，可以避免项目架构指导、SDK 构建部署指导、ArkTS 编写指导之间发生版本漂移。
+把它们放在同一个仓库里，可以避免项目架构指导、SDK 构建部署指导、ArkTS 编写指导、测试工作流指导之间发生版本漂移。

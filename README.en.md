@@ -3,13 +3,14 @@
 Chinese version: [README.md](./README.md)  
 English version: this file
 
-This repository bundles three reusable HarmonyOS programming skills:
+This repository bundles four reusable HarmonyOS programming skills:
 
 - `harmonyos-project-builder`
 - `harmonyos-sdk-build-deploy`
 - `harmonyos-arkts-v2-assistant`
+- `harmonyos-test-kit`
 
-They are designed to work together for HarmonyOS and OpenHarmony application development.
+They are designed to work together for HarmonyOS and OpenHarmony application development, covering project setup, official SDK build and deploy workflows, ArkTS authoring guidance, and official Test Kit testing workflows.
 
 ## Included skills
 
@@ -57,6 +58,18 @@ Focus:
 - `.ets` authoring patterns
 - MVVM and component boundaries
 
+### `harmonyos-test-kit`
+
+Use when official HarmonyOS Test Kit workflows are needed.
+
+Focus:
+
+- `@ohos/hypium` unit tests
+- `@kit.TestKit` / `@ohos.UiTest` UI tests
+- `PerfTest` white-box performance tests
+- `ohosTest` / `testRunner` / `module.json5` wiring
+- `aa test` execution and filtering
+
 ## Environment variables
 
 These skills do not rely on hardcoded local paths.
@@ -71,8 +84,8 @@ export HARMONYOS_SAMPLES_ROOT="/path/to/applications_app_samples"
 Example:
 
 ```sh
-export HARMONYOS_DOCS_ROOT="$HOME/playgroud/docs"
-export HARMONYOS_SAMPLES_ROOT="$HOME/playgroud/applications_app_samples"
+export HARMONYOS_DOCS_ROOT="$HOME/playground/docs"
+export HARMONYOS_SAMPLES_ROOT="$HOME/playground/applications_app_samples"
 ```
 
 Rules:
@@ -89,15 +102,16 @@ Copy or sync these directories into the skills directory used by your coding ass
 - `harmonyos-project-builder/`
 - `harmonyos-sdk-build-deploy/`
 - `harmonyos-arkts-v2-assistant/`
+- `harmonyos-test-kit/`
 
-If your environment uses a central skills directory such as `$CODEX_HOME/skills`, place the three skill folders there directly.
+If your environment uses a central skills directory such as `$CODEX_HOME/skills`, place these skill folders there directly.
 
 ## Why one repository
 
-These skills share:
+These four skills share:
 
 - cross-references between skills
 - the same environment-variable contract
 - a single HarmonyOS development workflow surface
 
-Keeping them together avoids version drift between project architecture guidance, SDK build and deploy guidance, and ArkTS authoring guidance.
+Keeping them together avoids version drift between project architecture guidance, SDK build and deploy guidance, ArkTS authoring guidance, and testing guidance.
