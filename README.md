@@ -1,40 +1,42 @@
-# HarmonyOS Programming Skills
+# HarmonyOS 编程 Skills
 
-This repository bundles three reusable HarmonyOS programming skills:
+中文说明：当前文件  
+English version: [README.en.md](./README.en.md)
+
+这个仓库收录了三个可复用的 HarmonyOS / OpenHarmony 编程辅助 skill：
 
 - `harmonyos-project-builder`
 - `harmonyos-sdk-build-deploy`
 - `harmonyos-arkts-v2-assistant`
 
-They are designed to work together for HarmonyOS and OpenHarmony application development.
+它们被设计为一组协同工作的能力，分别覆盖项目搭建、官方 SDK 构建部署，以及 ArkTS / `.ets` 编写指导。
 
-## Included skills
+## 包含的 skill
 
 ### `harmonyos-project-builder`
 
-Use when an empty or partial HarmonyOS project needs to become a complete working application.
+适用于将空项目或半成品 HarmonyOS 项目逐步补齐为可工作的完整项目。
 
-Focus:
+重点覆盖：
 
-- project scaffolding
-- directory layout
-- DevEco and hvigor structure
-- architecture and boundaries
-- staged verification
+- 项目脚手架与目录结构
+- DevEco 与 hvigor 工程布局
+- 架构分层与边界划分
+- 分阶段验证与交付推进
 
 ### `harmonyos-sdk-build-deploy`
 
-Use when official HarmonyOS SDK toolchain workflows are needed for:
+适用于需要使用 HarmonyOS 官方 SDK 工具链完成以下任务的场景：
 
-- build
-- package
-- install
-- launch
-- logs
-- signing
-- device debug
+- 编译
+- 打包
+- 安装
+- 启动
+- 查看日志
+- 签名
+- 真机调试
 
-Focus:
+重点覆盖：
 
 - `hdc`
 - `bm`
@@ -44,57 +46,57 @@ Focus:
 
 ### `harmonyos-arkts-v2-assistant`
 
-Use when ArkTS or `.ets` authoring guidance is needed.
+适用于 ArkTS 或 `.ets` 编写、修改和排错场景。
 
-Focus:
+重点覆盖：
 
 - ArkUI V2
-- ArkUI V1 maintenance
-- ArkTS versus TypeScript compatibility
-- `.ets` authoring patterns
-- MVVM and component boundaries
+- ArkUI V1 旧项目维护
+- ArkTS 与 TypeScript 语法差异
+- `.ets` 日常编写模式
+- MVVM 与组件边界
 
-## Environment variables
+## 环境变量
 
-These skills do not rely on hardcoded local paths.
+这些 skill 不依赖硬编码本地路径。
 
-Set these variables in your shell startup config, then restart your coding assistant:
+建议在 shell 启动配置中设置以下环境变量，然后重启你的编码助手：
 
 ```sh
 export HARMONYOS_DOCS_ROOT="/path/to/docs-repo-or-zh-cn"
 export HARMONYOS_SAMPLES_ROOT="/path/to/applications_app_samples"
 ```
 
-Example:
+示例：
 
 ```sh
 export HARMONYOS_DOCS_ROOT="$HOME/playgroud/docs"
 export HARMONYOS_SAMPLES_ROOT="$HOME/playgroud/applications_app_samples"
 ```
 
-Rules:
+约定如下：
 
-- `HARMONYOS_DOCS_ROOT` may point either to the docs repository root or directly to its `zh-cn/` subtree
-- `HARMONYOS_SAMPLES_ROOT` should point to the `applications_app_samples` repository root
-- if local docs are unavailable, the skills fall back to the official HarmonyOS documentation site
-- if local samples are unavailable, the skills still cover core workflows and only require samples when a task genuinely depends on sample inspection
+- `HARMONYOS_DOCS_ROOT` 可以指向 docs 仓库根目录，也可以直接指向其中的 `zh-cn/` 子目录
+- `HARMONYOS_SAMPLES_ROOT` 应指向 `applications_app_samples` 仓库根目录
+- 如果本地 docs 不可用，skill 会降级到官方 HarmonyOS 文档站搜索
+- 如果本地 samples 不可用，skill 仍可覆盖核心流程；只有当任务确实依赖样例时，才需要本地 sample
 
-## Using the skills
+## 如何使用这些 skill
 
-Copy or sync these directories into the skills directory used by your coding assistant:
+将以下目录复制或同步到你的技能目录：
 
 - `harmonyos-project-builder/`
 - `harmonyos-sdk-build-deploy/`
 - `harmonyos-arkts-v2-assistant/`
 
-If your environment uses a central skills directory such as `$CODEX_HOME/skills`, place the three skill folders there directly.
+如果你的环境使用集中式技能目录，例如 `$CODEX_HOME/skills`，直接把这三个 skill 目录放进去即可。
 
-## Why one repository
+## 为什么放在一个仓库里
 
-These skills share:
+这三个 skill 共享：
 
-- cross-references between skills
-- the same environment-variable contract
-- a single HarmonyOS development workflow surface
+- 彼此之间的引用关系
+- 相同的环境变量约定
+- 一条完整的 HarmonyOS 开发工作流
 
-Keeping them together avoids version drift between project architecture guidance, SDK build and deploy guidance, and ArkTS authoring guidance.
+把它们放在同一个仓库里，可以避免项目架构指导、SDK 构建部署指导、ArkTS 编写指导之间发生版本漂移。
