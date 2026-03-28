@@ -1,0 +1,4 @@
+interface:
+  display_name: "HarmonyOS Project Builder"
+  short_description: "Build complete HarmonyOS app projects step by step"
+  default_prompt: "Use $harmonyos-project-builder to turn this empty HarmonyOS project into a complete working application."

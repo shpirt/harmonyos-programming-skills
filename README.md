@@ -1,0 +1,100 @@
+# HarmonyOS Programming Skills
+
+This repository bundles three reusable HarmonyOS programming skills:
+
+- `harmonyos-project-builder`
+- `harmonyos-sdk-build-deploy`
+- `harmonyos-arkts-v2-assistant`
+
+They are designed to work together for HarmonyOS and OpenHarmony application development.
+
+## Included skills
+
+### `harmonyos-project-builder`
+
+Use when an empty or partial HarmonyOS project needs to become a complete working application.
+
+Focus:
+
+- project scaffolding
+- directory layout
+- DevEco and hvigor structure
+- architecture and boundaries
+- staged verification
+
+### `harmonyos-sdk-build-deploy`
+
+Use when official HarmonyOS SDK toolchain workflows are needed for:
+
+- build
+- package
+- install
+- launch
+- logs
+- signing
+- device debug
+
+Focus:
+
+- `hdc`
+- `bm`
+- `aa`
+- `packing-tool`
+- `binary-sign-tool`
+
+### `harmonyos-arkts-v2-assistant`
+
+Use when ArkTS or `.ets` authoring guidance is needed.
+
+Focus:
+
+- ArkUI V2
+- ArkUI V1 maintenance
+- ArkTS versus TypeScript compatibility
+- `.ets` authoring patterns
+- MVVM and component boundaries
+
+## Environment variables
+
+These skills do not rely on hardcoded local paths.
+
+Set these variables in your shell startup config, then restart your coding assistant:
+
+```sh
+export HARMONYOS_DOCS_ROOT="/path/to/docs-repo-or-zh-cn"
+export HARMONYOS_SAMPLES_ROOT="/path/to/applications_app_samples"
+```
+
+Example:
+
+```sh
+export HARMONYOS_DOCS_ROOT="$HOME/playgroud/docs"
+export HARMONYOS_SAMPLES_ROOT="$HOME/playgroud/applications_app_samples"
+```
+
+Rules:
+
+- `HARMONYOS_DOCS_ROOT` may point either to the docs repository root or directly to its `zh-cn/` subtree
+- `HARMONYOS_SAMPLES_ROOT` should point to the `applications_app_samples` repository root
+- if local docs are unavailable, the skills fall back to the official HarmonyOS documentation site
+- if local samples are unavailable, the skills still cover core workflows and only require samples when a task genuinely depends on sample inspection
+
+## Using the skills
+
+Copy or sync these directories into the skills directory used by your coding assistant:
+
+- `harmonyos-project-builder/`
+- `harmonyos-sdk-build-deploy/`
+- `harmonyos-arkts-v2-assistant/`
+
+If your environment uses a central skills directory such as `$CODEX_HOME/skills`, place the three skill folders there directly.
+
+## Why one repository
+
+These skills share:
+
+- cross-references between skills
+- the same environment-variable contract
+- a single HarmonyOS development workflow surface
+
+Keeping them together avoids version drift between project architecture guidance, SDK build and deploy guidance, and ArkTS authoring guidance.

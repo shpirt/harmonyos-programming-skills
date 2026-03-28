@@ -1,0 +1,4 @@
+interface:
+  display_name: "HarmonyOS SDK Build Deploy"
+  short_description: "Official HarmonyOS build and deploy workflows"
+  default_prompt: "Use $harmonyos-sdk-build-deploy to choose the right HarmonyOS SDK build, install, launch, package, and sign workflow from local docs."
