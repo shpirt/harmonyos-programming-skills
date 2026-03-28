@@ -6,11 +6,13 @@ Use this file as the first navigation map for HarmonyOS and OpenHarmony build, p
 
 - `HARMONYOS_DOCS_ROOT`
 - `HARMONYOS_SAMPLES_ROOT`
+- `DEVECO_SDK_HOME`
 
 Resolve paths as follows:
 
 - `HARMONYOS_DOCS_ROOT` may point either to the docs repository root or directly to its `zh-cn/` subtree
 - `HARMONYOS_SAMPLES_ROOT` may point to a local `applications_app_samples` repository, but this skill does not require samples for its core workflows
+- `DEVECO_SDK_HOME`, when present, should point to the DevEco SDK root directory rather than a nested tool directory
 - if `HARMONYOS_DOCS_ROOT` is missing or invalid, search `https://developer.huawei.com/consumer/cn/doc/` by document title or tool name before falling back to generic advice
 
 ## Priority
@@ -29,9 +31,32 @@ When platform behavior is unclear, prefer this order:
 - Path relative to `HARMONYOS_DOCS_ROOT`: `application-dev/tools/command-line-tools-overview.md`
 - Use for:
   - confirming which official tools exist in the SDK
+  - confirming that the SDK is obtained from DevEco Studio or Command Line Tools
   - picking between `hdc`, `aa`, `bm`, `hilog`, `packing-tool`
-- Key fact:
+- Key facts:
   - the SDK embedded in DevEco Studio already contains the main command-line tools
+  - command-line tools can also come from Command Line Tools
+  - the docs confirm the SDK lives under the DevEco Studio installation's `sdk` directory, but do not require a single environment-variable name for locating it
+
+### SDK and build-path resolution
+
+- Use for:
+  - locating the SDK root before build or packaging commands
+  - deciding whether `DEVECO_SDK_HOME` is usable in the current environment
+  - deriving tool paths in a cross-platform-safe way
+- Preferred order:
+  1. repository-provided build command or script
+  2. `DEVECO_SDK_HOME` when already set by the user or repository
+  3. `PATH` for tools already exposed by the environment
+  4. OS-appropriate DevEco Studio installation roots
+- Cross-platform notes:
+  - macOS example SDK root: `/Applications/DevEco-Studio.app/Contents/sdk`
+  - Windows example SDK root: `<DevEco Studio install dir>\sdk`
+  - Linux example SDK root: `<DevEco Studio install dir>/sdk`
+- Important reminders:
+  - do not hardcode one operating system path as the only valid answer
+  - `DEVECO_SDK_HOME` should point to the SDK root, not directly to `hdc`, `hvigorw`, or a nested toolchain path
+  - if the repository already calls a specific `hvigorw`, keep that command unless the user asked to normalize it
 
 ### `hdc`
 
@@ -136,7 +161,9 @@ When platform behavior is unclear, prefer this order:
 
 1. read the repo's AGENTS instructions and existing build scripts
 2. confirm the real DevEco or `hvigorw` command already used by the repo
-3. use official docs only to justify or troubleshoot the toolchain path
+3. resolve the SDK location via repository command, `DEVECO_SDK_HOME`, `PATH`, or OS-specific DevEco install root
+4. distinguish whether the requested build is for the main app target or an `ohosTest` target
+5. use official docs only to justify or troubleshoot the toolchain path
 
 ### If the user asks how to install or launch on a device
 
@@ -155,6 +182,40 @@ When platform behavior is unclear, prefer this order:
 ## Common command patterns
 
 Use these as starting templates. Replace placeholders with the real project values instead of inventing them.
+
+### SDK root examples
+
+Use these only as examples, not as universal hardcoded answers.
+
+```bash
+export DEVECO_SDK_HOME=/Applications/DevEco-Studio.app/Contents/sdk
+```
+
+```powershell
+$env:DEVECO_SDK_HOME = '<DevEco Studio install dir>\sdk'
+```
+
+### `hvigorw` app-module build
+
+```bash
+DEVECO_SDK_HOME=<sdk-root> <hvigorw-path> --no-daemon --mode module -p module=<module>@<target> -p product=<product> -p buildMode=<debug|release> assembleHap
+```
+
+Use for:
+
+- building the main app HAP when the repository already relies on `hvigorw`
+- explicitly selecting module target, product, and build mode from the repository's real build profile
+
+### `hvigorw` `ohosTest` build
+
+```bash
+DEVECO_SDK_HOME=<sdk-root> <hvigorw-path> --no-daemon --mode module -p module=<module>@ohosTest -p product=<product> -p buildMode=debug assembleHap
+```
+
+Use for:
+
+- compiling a HarmonyOS `ohosTest` package before `aa test` or device-side test execution
+- keeping test-target builds distinct from main-app builds
 
 ### Device discovery and shell
 
@@ -276,7 +337,7 @@ Use this order:
 Typical module build shape when the repo uses hvigor directly:
 
 ```bash
-<hvigorw> --no-daemon --mode module -p module=<module>@<product> -p product=<product> -p buildMode=<build-mode> assembleHap
+<hvigorw> --no-daemon --mode module -p module=<module>@<target> -p product=<product> -p buildMode=<build-mode> assembleHap
 ```
 
 Adapt the exact flags to the repository instead of copying this blindly.

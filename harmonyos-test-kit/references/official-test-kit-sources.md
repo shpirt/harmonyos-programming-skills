@@ -6,11 +6,13 @@ Use this file as the first navigation map for HarmonyOS and OpenHarmony applicat
 
 - `HARMONYOS_DOCS_ROOT`
 - `HARMONYOS_SAMPLES_ROOT`
+- `DEVECO_SDK_HOME`
 
 Resolve paths as follows:
 
 - `HARMONYOS_DOCS_ROOT` may point either to the docs repository root or directly to its `zh-cn/` subtree
 - `HARMONYOS_SAMPLES_ROOT` should point to the `applications_app_samples` repository root
+- `DEVECO_SDK_HOME`, when present, should point to the DevEco SDK root directory
 - if local docs or samples are missing, search `https://developer.huawei.com/consumer/cn/doc/` by document title before falling back to generic guidance
 
 ## Core docs relative to `HARMONYOS_DOCS_ROOT`
@@ -40,6 +42,18 @@ Resolve paths as follows:
 ## Common command patterns
 
 Replace placeholders with real project values.
+
+### SDK root examples
+
+```bash
+export DEVECO_SDK_HOME=/Applications/DevEco-Studio.app/Contents/sdk
+```
+
+```powershell
+$env:DEVECO_SDK_HOME = '<DevEco Studio install dir>\sdk'
+```
+
+Use these as examples only. On different operating systems, the DevEco installation root differs. Prefer repository commands or the already-configured environment over hardcoded paths.
 
 ### Run all tests in a Stage-model module
 

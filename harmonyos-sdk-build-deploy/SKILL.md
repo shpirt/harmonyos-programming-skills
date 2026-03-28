@@ -11,22 +11,30 @@ Keep the main response focused on the correct official path. Do not default to t
 
 Prefer local official docs discovered through `HARMONYOS_DOCS_ROOT`. If local docs are unavailable or invalid, fall back to searching the official HarmonyOS documentation site at `https://developer.huawei.com/consumer/cn/doc/`.
 
+Treat `DEVECO_SDK_HOME` as a preferred local environment variable when the repository or local shell already uses it to point at the DevEco SDK root. This variable is a useful local convention, not the only official way to locate the SDK. If it is missing, fall back to the repository's existing build command, the current `PATH`, or OS-appropriate DevEco Studio installation paths before guessing tool locations.
+
 ## Workflow Decision Tree
 
 1. Confirm whether the task is about official HarmonyOS toolchain usage.
    Triggers include `hdc`, `bm`, `aa`, HAP/HSP/APP packaging, signing, device install, launch, logs, or build/deploy troubleshooting.
 2. Prefer official docs before inferring commands.
    Start with `references/official-build-deploy-sources.md`.
-3. Choose the narrowest tool path that solves the request.
+3. Resolve the SDK and tool location before inventing commands.
+   - Prefer `DEVECO_SDK_HOME` when it is already set by the repository or user environment
+   - Otherwise inspect the repository's existing command lines and scripts
+   - Otherwise inspect `PATH` and OS-specific DevEco Studio installation locations
+   - Only then derive individual tool paths such as `hdc`, `hvigorw`, or packaging tools
+4. Choose the narrowest tool path that solves the request.
+   - Build outputs with the repository's real `hvigorw` or DevEco build path
    - Device connection, file transfer, direct install, logs: `hdc`
    - Install, uninstall, dump app info inside device shell: `bm`
    - Launch, stop, attach debug, measure startup: `aa`
    - Package build outputs into HAP/HSP/APP: `packing-tool`
    - Sign native ELF artifacts: `binary-sign-tool`
-4. Distinguish build from deploy.
+5. Distinguish build from deploy.
    - Build means producing project outputs with the DevEco or SDK build chain already used by the repo.
    - Deploy means moving artifacts to a device, installing them, launching abilities, and checking logs.
-5. Distinguish debug delivery from release packaging.
+6. Distinguish debug delivery from release packaging.
    - Debug delivery usually ends at HAP install plus `aa start` or DevEco run/debug.
    - Release delivery may require signing checks, APP packaging, and packaging-tool constraints.
 
@@ -99,13 +107,32 @@ Important:
 Read:
 - `references/official-build-deploy-sources.md` section `binary-sign-tool`
 
+### Build path resolution
+
+Use for:
+- locating the SDK root before build or packaging commands
+- deciding whether to use a repository-local `hvigorw` or a DevEco-installed wrapper
+- distinguishing app-module builds from `ohosTest` builds
+
+Important:
+- official docs confirm that command-line tools are obtained from the SDK embedded in DevEco Studio or from Command Line Tools
+- treat `DEVECO_SDK_HOME` as a preferred local convention when present, but not as an official universal requirement
+- on macOS, Windows, and Linux, DevEco installation roots differ, so never hardcode one OS path as the only answer
+- if the repository already provides a working `hvigorw` command, keep it
+- if the repository has separate `entry@default` and `entry@ohosTest` targets, choose the one that matches the requested artifact
+
+Read:
+- `references/official-build-deploy-sources.md` section `SDK and build-path resolution`
+
 ## Response Rules
 
 - Prefer the repository's existing DevEco or `hvigorw` build command when a project already defines one.
+- Resolve the SDK root first: prefer `DEVECO_SDK_HOME`, otherwise inspect repo commands, `PATH`, or OS-appropriate DevEco install locations.
 - Use official tool names and official argument patterns from local docs.
 - Be explicit about host-side path versus device-side path.
-- When install or launch depends on bundle name, module name, or ability name, derive them from the project before giving commands.
+- When install, launch, or build depends on bundle name, module name, target, product, or ability name, derive them from the project before giving commands.
 - If the user wants troubleshooting, identify the failing stage first:
+  - SDK discovery or path resolution
   - toolchain discovery
   - device connection
   - build output generation
@@ -122,6 +149,7 @@ Read:
 - If the user wants concrete day-to-day commands for build, install, launch, logs, or packaging, use the `Common command patterns` section in `references/official-build-deploy-sources.md`.
 - If the user asks about project structure, generated outputs, HAP composition, or single-HAP vs multi-HAP tradeoffs, also inspect the local quick-start docs referenced there.
 - If the request is about the current repository, inspect the repo's actual build scripts and AGENTS instructions after the official docs, then adapt the command sequence to the repo instead of replacing it.
+- If the request is about `aa test`, `ohosTest`, `testRunner`, or HarmonyOS Test Kit wiring, hand off to `$harmonyos-test-kit` for test-framework specifics and keep this skill focused on the underlying build and device toolchain.
 
 ## Boundaries
 

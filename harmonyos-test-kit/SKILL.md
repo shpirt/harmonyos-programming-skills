@@ -87,6 +87,7 @@ Do not create project-specific testing folders unless the repository already use
 - Prefer DevEco Studio execution when the user wants IDE-driven testing
 - Prefer `aa test` when the user wants command-line execution or test filtering
 - Distinguish Stage-model and FA-model parameters when giving `aa test` commands
+- If test execution depends on SDK location or `hvigorw`, prefer a repository-provided build command first, then `DEVECO_SDK_HOME`, then OS-appropriate DevEco paths
 - Derive bundle name, module name, and runner name from the actual project before giving final commands
 
 ## Decision Rules
@@ -173,6 +174,7 @@ Before execution:
 - read the repository's `AGENTS.md`, build instructions, and existing test modules
 - verify whether the app needs build or install steps first
 - use the repository's real build command when compilation is required before testing
+- if SDK location matters for the test build, prefer `DEVECO_SDK_HOME` when the repository or environment already uses it
 
 When code changes are involved, prefer the lightest valid verification:
 
