@@ -1,33 +1,35 @@
 ---
 name: harmonyos-project-builder
-description: Use when Codex needs to turn an empty or partial HarmonyOS/OpenHarmony project into a complete working application. Covers project scaffolding, directory layout, DevEco configuration, ArkTS UI architecture, state-management choices, service and ability boundaries, native or runtime integration, build and deploy workflow, and staged verification. Trigger on requests to build a HarmonyOS app from scratch, scaffold a project, complete an unfinished app, set up DevEco or hvigor structure, add VPN or extension abilities, wire native code, or define a project architecture and delivery plan.
+description: Use when Codex needs to turn an empty or partial HarmonyOS/OpenHarmony project into a complete working application. Covers official Stage-model project setup, directory layout, DevEco configuration, ArkTS UI architecture, state-management choices, ability and native integration boundaries, and staged verification. Trigger on requests to build a HarmonyOS app from scratch, scaffold a project, complete an unfinished app, set up DevEco or hvigor structure, add abilities or native integration, or define a project architecture and delivery plan.
 ---
 
 # HarmonyOS Project Builder
 
 ## Overview
 
-Build HarmonyOS projects in phases. Do not jump straight into feature code from an empty repository. Establish the project shape, configuration, architecture, runtime boundaries, and verification flow first, then implement features incrementally.
+Build HarmonyOS projects in phases. Do not jump straight into feature code from an empty repository. Establish the official Stage-model project shape, configuration, runtime boundaries, and verification flow first, then implement features incrementally.
 
-Use official HarmonyOS docs and samples before inventing structure. Prefer local copies discovered through `HARMONYOS_DOCS_ROOT` and `HARMONYOS_SAMPLES_ROOT`. If docs are unavailable locally, fall back to searching the official HarmonyOS documentation site at `https://developer.huawei.com/consumer/cn/doc/`. Read [references/project-blueprint.md](references/project-blueprint.md) for the target project shape, [references/system-client-pattern.md](references/system-client-pattern.md) for VPN or runtime-heavy apps, and [references/verification-checklist.md](references/verification-checklist.md) for the staged completion criteria.
+Use official HarmonyOS docs and official samples before inventing structure. Prefer local copies discovered through `HARMONYOS_DOCS_ROOT` and `HARMONYOS_SAMPLES_ROOT`. If docs are unavailable locally, fall back to searching the official HarmonyOS documentation site at `https://developer.huawei.com/consumer/cn/doc/`.
+
+Read [references/project-blueprint.md](references/project-blueprint.md) for the official build-first project shape, [references/system-client-pattern.md](references/system-client-pattern.md) for optional layering patterns that appear in official MVVM or system-capability samples, and [references/verification-checklist.md](references/verification-checklist.md) for staged completion criteria.
 
 For official SDK toolchain details such as `hdc`, `bm`, `aa`, packaging, signing, and device-side deploy flows, use `$harmonyos-sdk-build-deploy`. This skill should decide when build and deploy verification is required, not restate the full command-line tool reference.
 
-When the task is true scaffolding, use `scripts/scaffold_harmonyos_layout.py` to create the base directory layout before adding feature code.
+When the task is true scaffolding, use `scripts/scaffold_harmonyos_layout.py` only after aligning the target layout with official docs or official sample structure.
 
 ## Source Priority
 
 Consult sources in this order:
 
-1. Repository `AGENTS.md` and existing project files
-2. Local official docs discovered from `HARMONYOS_DOCS_ROOT`
-3. Local official samples discovered from `HARMONYOS_SAMPLES_ROOT`
-4. Official HarmonyOS documentation site `https://developer.huawei.com/consumer/cn/doc/` when local docs are unavailable or invalid
+1. Local official docs discovered from `HARMONYOS_DOCS_ROOT`
+2. Local official samples discovered from `HARMONYOS_SAMPLES_ROOT`
+3. Official HarmonyOS documentation site `https://developer.huawei.com/consumer/cn/doc/` when local docs are unavailable or invalid
+4. Repository `AGENTS.md` and existing project files
 5. General HarmonyOS knowledge only when the sources above do not answer the question
 
-Never assume a generic HarmonyOS layout is correct if the repository already defines one.
-
 Treat `HARMONYOS_DOCS_ROOT` as valid when it points either to the docs repository root or directly to its `zh-cn/` subtree. Treat `HARMONYOS_SAMPLES_ROOT` as valid when it points to the `applications_app_samples` repository root. If either environment variable is missing or invalid, continue with the remaining sources instead of failing immediately.
+
+Do not use the current repository as the default architecture template for new projects. Use the repository only to extend or preserve an already existing codebase.
 
 ## Workflow
 
@@ -44,28 +46,56 @@ Classify the target before creating files:
 
 If the repository already has structure, extend it. Do not rebuild it around a different architecture unless the user explicitly asks for a redesign.
 
-### 2. Establish the minimum working skeleton
+### 2. Establish the official minimum working skeleton
 
-Before feature work, ensure the project has:
+Before feature work, ensure the project has the official Stage-model build-first structure:
 
-- App and module config files
-- A valid entry module
-- Main pages routing
-- Base resource structure
-- A buildable hvigor configuration
-- A clear ArkTS source layout
+- `AppScope/app.json5`
+- root `build-profile.json5`
+- root `hvigorfile.ts`
+- module `build-profile.json5`
+- module `hvigorfile.ts`
+- `entry/src/main/module.json5`
+- `entry/src/main/ets/entryability`
+- `entry/src/main/ets/pages`
+- `entry/src/main/resources`
+- page routing config under `resources/base/profile/`
 
-Prefer a layout that separates:
+These items come from official docs and default Stage-model project generation. Treat them as the baseline before introducing extra engineering layers.
 
-- `pages/` for composition and page entry
-- `viewmodel/` for UI-facing state transitions
-- `service/` for orchestration, IO, bridge, persistence, and events
-- `model/` for observed UI models and plain DTOs
-- `vpn/`, `extension/`, `native/`, or runtime folders when the app actually needs them
+### 3. Add only the engineering layers the project actually needs
 
-If the repository is still missing these directories, prefer creating them with `scripts/scaffold_harmonyos_layout.py` instead of rebuilding the same folder tree by hand.
+After the official skeleton is in place, inspect official samples relevant to the target complexity.
 
-### 3. Pick the UI architecture early
+For example, the official `StateMgmtV2MVVM` sample uses this shape under `entry/src/main/ets/`:
+
+```text
+entry/src/main/ets/
+  entryability/
+  model/
+  pages/
+  settingability/
+  view/
+  viewmodel/
+```
+
+Treat that as a valid official MVVM-style sample pattern for larger ArkTS apps. In that pattern:
+
+- `pages/` holds page entry and composition
+- `view/` holds reusable presentational sections
+- `viewmodel/` holds UI-facing state transitions
+- `model/` holds UI-facing models
+- additional ability folders such as `settingability/` are added only when the sample or feature set needs them
+
+For system-capability or runtime-heavy apps, add only the extra implementation layers that the selected official sample pattern, required ability type, or native integration actually forces you to introduce. Common examples are:
+
+- `service/` when orchestration, persistence, import, or bridge coordination no longer fits cleanly in page or ViewModel code
+- ability-specific source folders only when the app really adds another ability or extension beyond `entryability/`
+- `bridge/` or native-facing folders only when native integration is present
+
+Do not pre-create project-specific folders in a generic scaffolding flow. Add source folders only when a concrete ability, integration boundary, or official sample pattern requires them.
+
+### 4. Pick the UI architecture early
 
 For new UI work, default to ArkUI V2:
 
@@ -77,34 +107,32 @@ For new UI work, default to ArkUI V2:
 - `@Event`
 - `@LocalBuilder` when local composition is necessary
 
-Keep pages thin. Put runtime coordination and nontrivial state transitions into viewmodels or services.
+Keep pages focused on entry and composition. If the app grows beyond simple page logic, use official MVVM-style sample patterns before inventing a custom split.
 
-If the app is expected to grow beyond one page or one form, use MVVM-style separation from the start instead of waiting for later cleanup.
-
-### 4. Define system boundaries before integration
+### 5. Define system boundaries before integration
 
 When the project involves platform or native capabilities, define the boundary explicitly:
 
-- UI-observed state stays in UI and ViewModel layers
+- UI-observed state stays in UI or ViewModel layers
 - Cross-process, persistence, event-bus, bridge, and native boundaries use plain DTOs
 - Native, runtime, or Go wrappers do not receive observed UI objects directly
-- Abilities and extensions expose a clear contract to services or viewmodels
+- Abilities and extensions expose a clear contract to services or UI-facing coordinators
 
 Do not patch over boundary issues with JSON deep copies, ad hoc listeners, or duplicated state fields.
 
-### 5. Build feature slices, not disconnected files
+### 6. Build feature slices, not disconnected files
 
 Implement one end-to-end slice at a time:
 
 1. Data model or DTO
-2. Service or integration logic
-3. ViewModel
+2. Service or integration logic when needed
+3. ViewModel or UI-facing coordination when needed
 4. UI composition
 5. Verification
 
 Complete one slice before starting the next, unless the user explicitly wants scaffolding only.
 
-### 6. Verify by stage
+### 7. Verify by stage
 
 Use staged verification:
 
@@ -121,16 +149,15 @@ Do not claim the project is complete only because files exist. Completion requir
 
 Exit this phase only when:
 
-- The directory structure is coherent
+- The official Stage-model project shape is coherent
 - Build config files are present and internally consistent
-- Entry pages or abilities are wired
-- Resources and routing are minimally usable
+- Entry ability, pages, resources, and routing are minimally usable
 
 ### Phase 2: Architecture
 
 Exit this phase only when:
 
-- Page, ViewModel, service, and model responsibilities are clear
+- UI, ViewModel, service, and model responsibilities are clear where those layers exist
 - V1 versus V2 state-management choice is explicit
 - Native or extension boundaries are defined when applicable
 
@@ -154,8 +181,9 @@ Exit this phase only when:
 
 ### Architecture
 
-- Prefer one project-wide structure over per-feature improvisation
-- If the repository already contains `pages`, `viewmodel`, `service`, and `model`, keep that pattern
+- Default to the official Stage-model project skeleton for empty projects
+- Introduce extra folders only when official samples, required ability types, or real project complexity justify them
+- If the repository already contains a coherent internal folder split, keep that pattern unless a redesign is explicitly requested
 - Split runtime-facing orchestration out of UI structs as soon as it becomes stateful or asynchronous
 
 ### State management
@@ -174,7 +202,7 @@ Exit this phase only when:
 
 ### Native or runtime integration
 
-- Introduce a narrow service boundary between UI/ViewModel and native/runtime code
+- Introduce a narrow service or bridge boundary between UI-facing layers and native/runtime code
 - Keep start, stop, status, logs, and selector updates as explicit flows
 - Prefer DTO mapping rather than leaking internal runtime models upward
 
@@ -184,18 +212,18 @@ Exit this phase only when:
 
 Do this in order:
 
-1. Create config and routing skeleton
-2. Add one landing page
-3. Add one ViewModel-backed interaction
+1. Create the official Stage-model skeleton and routing config
+2. Add one landing page under `pages/`
+3. Add one interaction using the lightest necessary state pattern
 4. Confirm buildability
 
-### Basic app to complete multi-page app
+### Basic app to structured ArkTS app
 
 Do this in order:
 
-1. Move shared state into viewmodels or services
-2. Split reusable views from page composition
-3. Add persistence or app-wide state
+1. Keep entry ability, pages, and resources aligned with the official layout
+2. Add `view/` or `views/`, `viewmodel/`, or `model/` only if official sample patterns match the target complexity
+3. Add persistence or app-wide state only when the feature set requires it
 4. Add verification for page transitions and state restoration
 
 ### App to system-capability client
@@ -203,8 +231,8 @@ Do this in order:
 Do this in order:
 
 1. Define the capability boundary and permissions
-2. Add the required ability, extension, or bridge layer
-3. Wire service APIs to ViewModel state
+2. Add only the required ability implementation, extension source set, or bridge layer
+3. Wire service APIs to UI-facing state
 4. Add logs, status, and failure reporting
 5. Verify on device when the capability requires it
 
@@ -230,5 +258,6 @@ When using this skill:
 
 - State the current phase and the next phase
 - Make architecture choices explicit instead of implying them
+- Explicitly say when a layer is required by official project shape versus added as an optional engineering layer
 - Prefer small, complete slices over long speculative plans
-- When blocked, identify the missing project fact instead of inventing one
+- When blocked, identify the missing official or project fact instead of inventing one

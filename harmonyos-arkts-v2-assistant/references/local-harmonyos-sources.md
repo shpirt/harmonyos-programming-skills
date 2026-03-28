@@ -79,6 +79,7 @@ Use these for:
 Use these for:
 
 - V2 MVVM sample structure
+- official `entry/src/main/ets/` layout such as `entryability/`, `pages/`, `view/`, `viewmodel/`, `model/`, and `settingability/` in `StateMgmtV2MVVM`
 - `@Local`, `@Param`, `@Event`
 - `@ObservedV2`, `@Trace`, `@Monitor`, `@Computed`
 - `@LocalBuilder` cases including refresh pitfalls

@@ -1,6 +1,6 @@
 ---
 name: harmonyos-sdk-build-deploy
-description: Use when Codex needs official HarmonyOS/OpenHarmony build, package, install, launch, signing, or device-debug workflows based on local developer documentation. Trigger on HarmonyOS build or deploy requests, DevEco SDK command-line tool usage, `hdc`, `bm`, `aa`, `hilog`, `packing-tool`, HAP/HSP/APP packaging, signing, device install, launch, or when Codex should prefer local official docs over third-party wrappers.
+description: Use when Codex needs official HarmonyOS/OpenHarmony SDK toolchain workflows for build output generation, packaging, install, launch, signing, logs, or device-debug based on local developer documentation. Trigger on DevEco SDK command-line tool usage, `hdc`, `bm`, `aa`, `hilog`, `packing-tool`, HAP/HSP/APP packaging, signing, device install, launch, or build/deploy troubleshooting where Codex should prefer local official docs over third-party wrappers.
 ---
 
 # HarmonyOS SDK Build Deploy

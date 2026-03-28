@@ -1,6 +1,6 @@
 ---
 name: harmonyos-arkts-v2-assistant
-description: Use for HarmonyOS/OpenHarmony ArkTS work when Codex needs official documentation and samples to answer syntax, state management, UI architecture, migration, compile-error, component, or legacy ArkUI maintenance questions. Trigger on `.ets` files, ArkTS decorators, `@kit` or `@ohos` APIs, HarmonyOS/OpenHarmony context, `@ComponentV2`, `@ObservedV2`, `@Trace`, `@Local`, `@Param`, `@Event`, `@LocalBuilder`, `@State`, `@Prop`, `@Link`, `@Provide`, `@Consume`, `@StorageLink`, `@StorageProp`, `@Watch`, MVVM, or when V1/V2 state-management choices are relevant.
+description: Use for HarmonyOS/OpenHarmony ArkTS code work when Codex needs official documentation and samples to answer `.ets` syntax, state management, component semantics, migration, compile-error, API-usage, or legacy ArkUI maintenance questions. Trigger on `.ets` files, ArkTS decorators, `@kit` or `@ohos` APIs, HarmonyOS/OpenHarmony context, `@ComponentV2`, `@ObservedV2`, `@Trace`, `@Local`, `@Param`, `@Event`, `@LocalBuilder`, `@State`, `@Prop`, `@Link`, `@Provide`, `@Consume`, `@StorageLink`, `@StorageProp`, `@Watch`, or when V1/V2 state-management choices are relevant inside code.
 ---
 
 # HarmonyOS ArkTS V2 Assistant
@@ -200,7 +200,7 @@ Use the local MVVM V2 docs and samples when the task involves:
 - Introducing models or viewmodels
 - Reusing stateful child components
 
-Prefer examples modeled after `StateMgmtV2MVVM` sample structure.
+Prefer examples modeled after `StateMgmtV2MVVM` sample structure. That official sample organizes `entry/src/main/ets/` with `entryability/`, `pages/`, `view/`, `viewmodel/`, `model/`, and `settingability/`; when guiding `.ets` work, preserve or extend that official sample layout instead of inventing a repo-specific split.
 
 ### `.ets` authoring patterns
 
