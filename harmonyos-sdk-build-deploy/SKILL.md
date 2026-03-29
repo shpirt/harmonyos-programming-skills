@@ -1,6 +1,6 @@
 ---
 name: harmonyos-sdk-build-deploy
-description: Use when Codex needs official HarmonyOS/OpenHarmony SDK toolchain workflows for build output generation, packaging, install, launch, signing, logs, or device-debug based on local developer documentation. Trigger on DevEco SDK command-line tool usage, `hdc`, `bm`, `aa`, `hilog`, `packing-tool`, HAP/HSP/APP packaging, signing, device install, launch, or build/deploy troubleshooting where Codex should prefer local official docs over third-party wrappers.
+description: Use when Codex needs official HarmonyOS/OpenHarmony SDK toolchain workflows for build output generation, packaging, install, launch, signing, logs, device-debug, or build-deploy troubleshooting based on local developer documentation. Trigger on DevEco SDK command-line tool usage, `hdc`, `bm`, `aa`, `hilog`, `packing-tool`, HAP/HSP/APP packaging, signing, device install, launch, test-package install, or troubleshooting around API compatibility, SysCap, signing, or device deployment where Codex should prefer local official docs over third-party wrappers.
 ---
 
 # HarmonyOS SDK Build Deploy
@@ -37,6 +37,13 @@ Treat `DEVECO_SDK_HOME` as a preferred local environment variable when the repos
 6. Distinguish debug delivery from release packaging.
    - Debug delivery usually ends at HAP install plus `aa start` or DevEco run/debug.
    - Release delivery may require signing checks, APP packaging, and packaging-tool constraints.
+7. If install fails, identify the failure stage before changing code.
+   - artifact generation
+   - signature or profile verification
+   - API compatibility
+   - SysCap compatibility
+   - device-side install path
+   - launch or runtime failure after install
 
 ## Official Tool Selection
 
@@ -140,6 +147,7 @@ Read:
   - install
   - launch
   - runtime logs
+- For install failures, explicitly check signing or profile mismatch, device API compatibility, and SysCap compatibility before suggesting app-code changes
 - Treat `HARMONYOS_DOCS_ROOT` as valid when it points either to the docs repository root or directly to its `zh-cn/` subtree
 - If `HARMONYOS_DOCS_ROOT` is missing or invalid, search `https://developer.huawei.com/consumer/cn/doc/` before falling back to generic advice
 

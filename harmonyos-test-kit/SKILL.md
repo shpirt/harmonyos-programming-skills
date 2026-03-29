@@ -1,6 +1,6 @@
 ---
 name: harmonyos-test-kit
-description: Use when Codex needs official HarmonyOS/OpenHarmony Test Kit workflows for ArkTS unit tests, UI tests, performance tests, test-runner wiring, or command-line test execution. Trigger on `@ohos/hypium`, `@kit.TestKit`, `@ohos.UiTest`, `Driver`, `ON`, `aa test`, `ohosTest`, `testRunner`, `OpenHarmonyTestRunner`, unit-test, UI-test, performance-test, or when Codex should follow local official docs and samples for HarmonyOS testing.
+description: Use when Codex needs official HarmonyOS/OpenHarmony Test Kit workflows for ArkTS unit tests, UI tests, performance tests, test-runner wiring, or command-line test execution, including deciding the minimum test surface for complete or validation-oriented app samples. Trigger on `@ohos/hypium`, `@kit.TestKit`, `@ohos.UiTest`, `Driver`, `ON`, `aa test`, `ohosTest`, `testRunner`, `OpenHarmonyTestRunner`, unit-test, UI-test, performance-test, test coverage, or when Codex should follow local official docs and samples for HarmonyOS testing.
 ---
 
 # HarmonyOS Test Kit
@@ -11,6 +11,7 @@ Use this skill for official HarmonyOS application testing workflows based on Tes
 
 Read [references/official-test-kit-sources.md](references/official-test-kit-sources.md) first for doc paths, sample paths, and command templates.
 Read [references/test-module-structure.md](references/test-module-structure.md) when the task is about `ohosTest`, `module.json5`, `testRunner`, or how to place test code in a Stage-model project.
+Read [references/ui-smoke-stability.md](references/ui-smoke-stability.md) when the task is about mobile UI smoke tests, below-fold content, scrolling, or flaky component lookup.
 
 For project scaffolding or app-completion work, use `$harmonyos-project-builder`.
 For general SDK build, packaging, install, launch, or device-debug workflows outside testing, use `$harmonyos-sdk-build-deploy`.
@@ -42,6 +43,17 @@ Put the request into one primary bucket:
 - `aa test` execution or filtering
 - Test failure diagnosis
 - Converting a manual validation path into an automated test
+
+### 1a. Decide the minimum test surface
+
+If the user asks for a complete app, sample app, demo, or skill-validation target and does not narrow testing scope, do not default to zero tests.
+
+Use this default unless the user asks for something narrower:
+
+- one logic-focused test for non-UI state or business behavior
+- one UI smoke test for the primary rendered flow when UI interaction is central to the app
+
+If you intentionally omit either layer, say so explicitly.
 
 ### 2. Load the narrowest official source first
 
@@ -82,6 +94,7 @@ Do not create project-specific testing folders unless the repository already use
 - Use UI tests when the behavior depends on rendered UI, component lookup, gestures, focus, dialogs, or navigation
 - Use performance tests only when the task is explicitly about measurable timing, CPU, memory, startup delay, page-switch latency, or scroll FPS
 - If the repository already has a test style, extend it instead of rewriting everything around a different framework
+- For complete app demos or skill-validation samples, prefer adding both a logic test and a UI smoke test unless the user narrowed scope
 
 ### 5. Keep tests aligned with official execution flows
 
@@ -108,6 +121,10 @@ Do not create project-specific testing folders unless the repository already use
 - Use `waitForIdle` or `waitForComponent` after UI-triggering actions when the page needs time to settle
 - Do not invent repository-specific page-driver abstractions unless the codebase already has them
 - When deciding what UI behavior should be asserted, derive the expected navigation, state, and interaction behavior from the product or design basis first; if that basis should follow official HarmonyOS design rules, read `$harmonyos-ui-ux-guidelines` before finalizing the test intent
+- For phone-sized UI smoke tests, keep first-screen assertions minimal and stable; do not assume below-fold content is visible on initial render
+- Prefer structural text or section labels over seeded demo-task text when writing smoke assertions
+- If scrolling is required, prefer explicit swipe coordinates before abstract directional fling when reliability matters more than elegance
+- When `waitForComponent` returns the node you need next, act on that returned instance instead of immediately re-finding it
 
 ### Performance tests
 
@@ -144,7 +161,15 @@ Do not create project-specific testing folders unless the repository already use
 2. use official `Driver` and `ON` patterns first
 3. add waits only where page state actually changes asynchronously
 4. prefer semantic component lookup before coordinate-only interaction
-5. provide the narrowest runnable test command when execution is requested
+5. keep mobile smoke assertions robust against small-screen folding and scroll position
+6. provide the narrowest runnable test command when execution is requested
+
+### Add baseline test coverage to an app sample
+
+1. identify the core non-UI state path and add one logic-focused test for it
+2. identify the primary UI flow and add one UI smoke test for it
+3. wire `ohosTest` only as far as the chosen UI smoke path requires
+4. report clearly which parts are covered and which are intentionally not covered
 
 ### Add or fix a performance test
 
@@ -183,6 +208,7 @@ When code changes are involved, prefer the lightest valid verification:
 - compile the affected test module first when possible
 - run the narrowest unit, UI, or perf test path that matches the request
 - use broader test-package execution only when the user asked for it or the change scope requires it
+- if a test `.ets` compile error looks like an ArkTS typing problem, consult `$harmonyos-arkts-v2-assistant` before treating it as a pure Test Kit issue
 
 ## Output Style
 

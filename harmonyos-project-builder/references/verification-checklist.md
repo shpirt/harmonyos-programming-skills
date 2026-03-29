@@ -37,4 +37,5 @@ Use this checklist before calling a HarmonyOS project complete.
 
 - Known gaps are listed explicitly
 - Build command and verification command are documented in the repository context
+- Test coverage expectations are satisfied or explicitly called out as omitted
 - The next unfinished phase is clear

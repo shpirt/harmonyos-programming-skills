@@ -1,6 +1,6 @@
 ---
 name: harmonyos-project-builder
-description: Use when Codex needs to turn an empty or partial HarmonyOS/OpenHarmony project into a complete working application. Covers official Stage-model project setup, directory layout, DevEco configuration, ArkTS UI architecture, state-management choices, ability and native integration boundaries, and staged verification. Trigger on requests to build a HarmonyOS app from scratch, scaffold a project, complete an unfinished app, set up DevEco or hvigor structure, add abilities or native integration, or define a project architecture and delivery plan.
+description: Use when Codex needs to turn an empty or partial HarmonyOS/OpenHarmony project into a complete working application or demo-ready sample. Covers official Stage-model project setup, directory layout, DevEco configuration, ArkTS UI architecture, state-management choices, test expectations for complete or validation-oriented apps, ability and native integration boundaries, and staged verification. Trigger on requests to build a HarmonyOS app from scratch, scaffold a project, complete an unfinished app, create a sample app, set up DevEco or hvigor structure, add abilities or native integration, or define a project architecture and delivery plan.
 ---
 
 # HarmonyOS Project Builder
@@ -11,9 +11,10 @@ Build HarmonyOS projects in phases. Do not jump straight into feature code from 
 
 Use official HarmonyOS docs and official samples before inventing structure. Prefer local copies discovered through `HARMONYOS_DOCS_ROOT` and `HARMONYOS_SAMPLES_ROOT`. If docs are unavailable locally, fall back to searching the official HarmonyOS documentation site at `https://developer.huawei.com/consumer/cn/doc/`.
 
-Read [references/project-blueprint.md](references/project-blueprint.md) for the official build-first project shape, [references/system-client-pattern.md](references/system-client-pattern.md) for optional layering patterns that appear in official MVVM or system-capability samples, and [references/verification-checklist.md](references/verification-checklist.md) for staged completion criteria.
+Read [references/project-blueprint.md](references/project-blueprint.md) for the official build-first project shape, [references/project-init-checklist.md](references/project-init-checklist.md) when the user's request is underspecified and you need the minimum delivery contract, [references/system-client-pattern.md](references/system-client-pattern.md) for optional layering patterns that appear in official MVVM or system-capability samples, and [references/verification-checklist.md](references/verification-checklist.md) for staged completion criteria.
 
 For official SDK toolchain details such as `hdc`, `bm`, `aa`, packaging, signing, and device-side deploy flows, use `$harmonyos-sdk-build-deploy`. This skill should decide when build and deploy verification is required, not restate the full command-line tool reference.
+For unit, UI, or `ohosTest` expectations in complete or validation-oriented app work, use `$harmonyos-test-kit`.
 For page structure, navigation model, responsive or adaptive layout, multimodal interaction expectations, or HarmonyOS design-rule reviews, use `$harmonyos-ui-ux-guidelines`.
 
 When the task is true scaffolding, use `scripts/scaffold_harmonyos_layout.py` only after aligning the target layout with official docs or official sample structure.
@@ -34,7 +35,21 @@ Do not use the current repository as the default architecture template for new p
 
 ## Workflow
 
-### 1. Determine the project class
+### 1. Establish the delivery contract first
+
+If the user asks for a complete app, sample app, demo, validation target, or "full" implementation but leaves key project choices unspecified, do not silently invent all defaults.
+
+Read [references/project-init-checklist.md](references/project-init-checklist.md), then resolve or state explicit defaults for:
+
+- target device class and API level when that affects build or install behavior
+- whether the goal is compile-only, emulator-ready, device-installable, or fully demo-ready
+- whether persistence is required or in-memory demo data is acceptable
+- whether the app should include tests, and if so whether logic-only or UI verification is expected
+- whether the request is validation-oriented enough that a minimal UI smoke test should be included
+
+If the user does not answer, choose the narrowest reasonable defaults and state them explicitly in the work.
+
+### 2. Determine the project class
 
 Classify the target before creating files:
 
@@ -47,7 +62,7 @@ Classify the target before creating files:
 
 If the repository already has structure, extend it. Do not rebuild it around a different architecture unless the user explicitly asks for a redesign.
 
-### 2. Establish the official minimum working skeleton
+### 3. Establish the official minimum working skeleton
 
 Before feature work, ensure the project has the official Stage-model build-first structure:
 
@@ -64,7 +79,7 @@ Before feature work, ensure the project has the official Stage-model build-first
 
 These items come from official docs and default Stage-model project generation. Treat them as the baseline before introducing extra engineering layers.
 
-### 3. Add only the engineering layers the project actually needs
+### 4. Add only the engineering layers the project actually needs
 
 After the official skeleton is in place, inspect official samples relevant to the target complexity.
 
@@ -96,7 +111,7 @@ For system-capability or runtime-heavy apps, add only the extra implementation l
 
 Do not pre-create project-specific folders in a generic scaffolding flow. Add source folders only when a concrete ability, integration boundary, or official sample pattern requires them.
 
-### 4. Pick the UI architecture early
+### 5. Pick the UI architecture early
 
 For new UI work, default to ArkUI V2:
 
@@ -111,7 +126,7 @@ For new UI work, default to ArkUI V2:
 Keep pages focused on entry and composition. If the app grows beyond simple page logic, use official MVVM-style sample patterns before inventing a custom split.
 If the harder question is the HarmonyOS UX itself, such as whether the app should use bottom tabs, side navigation, layered navigation, adaptive layout, multimodal controls, or specific interaction states, defer that decision to `$harmonyos-ui-ux-guidelines` before finalizing the UI structure.
 
-### 5. Define system boundaries before integration
+### 6. Define system boundaries before integration
 
 When the project involves platform or native capabilities, define the boundary explicitly:
 
@@ -122,7 +137,7 @@ When the project involves platform or native capabilities, define the boundary e
 
 Do not patch over boundary issues with JSON deep copies, ad hoc listeners, or duplicated state fields.
 
-### 6. Build feature slices, not disconnected files
+### 7. Build feature slices, not disconnected files
 
 Implement one end-to-end slice at a time:
 
@@ -134,13 +149,13 @@ Implement one end-to-end slice at a time:
 
 Complete one slice before starting the next, unless the user explicitly wants scaffolding only.
 
-### 7. Verify by stage
+### 8. Verify by stage
 
 Use staged verification:
 
 - Config and compile validation first
 - Runtime startup next
-- Feature-path verification after that
+- Feature-path and test-path verification after that
 - Device deployment last when needed
 
 Do not claim the project is complete only because files exist. Completion requires passing the relevant checks in [references/verification-checklist.md](references/verification-checklist.md).
@@ -176,6 +191,7 @@ Exit this phase only when:
 Exit this phase only when:
 
 - The project builds with the repository's real commands
+- Required tests are present or their absence is called out explicitly
 - Required device or runtime checks pass
 - Known risks or unimplemented areas are called out explicitly
 
@@ -201,6 +217,7 @@ Exit this phase only when:
 - Read existing `build-profile.json5`, `app.json5`, `module.json5`, and `hvigorfile.ts` before changing build commands
 - Match existing products, modules, and build modes
 - For official SDK build, install, launch, packaging, signing, and log workflows, defer to `$harmonyos-sdk-build-deploy`
+- For complete apps, demo apps, or skill-validation requests, decide and state the minimum test expectation up front instead of leaving the project silently untested
 
 ### Native or runtime integration
 
@@ -227,6 +244,7 @@ Do this in order:
 2. Add `view/` or `views/`, `viewmodel/`, or `model/` only if official sample patterns match the target complexity
 3. Add persistence or app-wide state only when the feature set requires it
 4. Add verification for page transitions and state restoration
+5. If the user asked for a complete app, sample app, or validation target, coordinate with `$harmonyos-test-kit` to add at least the minimum agreed test surface
 
 ### App to system-capability client
 
@@ -250,6 +268,7 @@ For complex projects, report verification in three buckets:
 
 - Build status
 - Runtime or device status
+- Test status
 - Remaining risks
 
 Keep this skill focused on whether the project has reached the required verification stage. Keep detailed SDK tool selection and command guidance in `$harmonyos-sdk-build-deploy`.
@@ -262,4 +281,5 @@ When using this skill:
 - Make architecture choices explicit instead of implying them
 - Explicitly say when a layer is required by official project shape versus added as an optional engineering layer
 - Prefer small, complete slices over long speculative plans
+- State the defaults you chose when the user left delivery or test expectations underspecified
 - When blocked, identify the missing official or project fact instead of inventing one

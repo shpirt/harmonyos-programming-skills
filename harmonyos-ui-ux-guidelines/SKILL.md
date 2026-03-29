@@ -1,6 +1,6 @@
 ---
 name: harmonyos-ui-ux-guidelines
-description: Use when the user needs HarmonyOS or OpenHarmony app UI/UX design guidance, design review, page structure advice, navigation choices, responsive or adaptive layout decisions, multimodal input consistency, visual rules, motion rules, or a pre-implementation or post-implementation design audit against HarmonyOS app design specifications.
+description: Use when the user needs HarmonyOS or OpenHarmony app UI/UX design guidance, design review, page structure advice, navigation choices, responsive or adaptive layout decisions, multimodal input consistency, component semantics, editing-flow decisions, visual rules, motion rules, or a pre-implementation or post-implementation design audit against HarmonyOS app design specifications.
 ---
 
 # HarmonyOS UI UX Guidelines
@@ -102,6 +102,7 @@ When the task is paired with app implementation:
 - identify required input modes such as touch, mouse, keyboard, remote, or gamepad
 - distinguish mandatory rules from recommended refinements
 - prefer system-provided components and patterns before custom ones
+- if a screen mixes browse, create, edit, and summary responsibilities, decide explicitly whether the one-page composition is still acceptable or whether the flow should split
 
 ### 5. End with an actionable review
 
@@ -133,6 +134,7 @@ For review tasks, produce:
 - Treat multimodal input consistency as part of core UX, not an optional desktop enhancement
 - If a screen can be used with mouse or keyboard, review hover, focus, active, and disabled states explicitly
 - Prefer system interaction behavior unless there is a product-specific reason to customize it
+- When a user starts editing an item from a list, prefer a spatially local edit state or a clearly signaled transition; avoid silent jumps to a distant edit region unless the UI makes that mapping obvious
 
 ### Visual design
 
@@ -145,6 +147,7 @@ For review tasks, produce:
 - Prefer official HarmonyOS multimodal components and their documented states
 - Review whether the chosen component matches the device and interaction mode, not just the raw function
 - If a custom component replaces a system component, review its states and interaction parity explicitly
+- If a control is really choosing state rather than triggering a one-off action, review whether a selection-oriented component is more appropriate than a generic button
 
 ### Motion
 

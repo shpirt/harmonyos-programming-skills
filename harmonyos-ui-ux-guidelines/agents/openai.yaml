@@ -1,4 +1,4 @@
 interface:
   display_name: "HarmonyOS UI UX Guidelines"
-  short_description: "HarmonyOS app UI/UX design guidance"
-  default_prompt: "Use HarmonyOS app design guidelines to review or guide UI/UX decisions."
+  short_description: "Review HarmonyOS UI, layout, and interaction decisions"
+  default_prompt: "Use $harmonyos-ui-ux-guidelines to review this HarmonyOS app UI, layout, navigation, or interaction decision."

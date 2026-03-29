@@ -1,4 +1,4 @@
 interface:
   display_name: "HarmonyOS ArkTS V2"
-  short_description: "Guide HarmonyOS ArkTS V2 coding workflows"
-  default_prompt: "Use $harmonyos-arkts-v2-assistant to solve this HarmonyOS ArkTS V2 task with local official docs and samples."
+  short_description: "Guide ArkTS V2 and .ets implementation issues"
+  default_prompt: "Use $harmonyos-arkts-v2-assistant to solve this HarmonyOS ArkTS or .ets implementation problem with official docs."

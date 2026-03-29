@@ -171,6 +171,11 @@ When platform behavior is unclear, prefer this order:
 2. choose direct `hdc install` or `hdc shell` plus `bm install` based on where the artifact lives
 3. use `aa start` when the app or ability must be launched explicitly
 4. use `hdc hilog` or repo-specific log commands for runtime diagnosis
+5. if install fails, classify the problem before changing code:
+   - signing or profile verification
+   - device API mismatch
+   - SysCap mismatch
+   - device-side path or bundle metadata problem
 
 ### If the user asks how to package for release
 

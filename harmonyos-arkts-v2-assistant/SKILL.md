@@ -1,6 +1,6 @@
 ---
 name: harmonyos-arkts-v2-assistant
-description: Use for HarmonyOS/OpenHarmony ArkTS code work when Codex needs official documentation and samples to answer `.ets` syntax, state management, component semantics, migration, compile-error, API-usage, or legacy ArkUI maintenance questions. Trigger on `.ets` files, ArkTS decorators, `@kit` or `@ohos` APIs, HarmonyOS/OpenHarmony context, `@ComponentV2`, `@ObservedV2`, `@Trace`, `@Local`, `@Param`, `@Event`, `@LocalBuilder`, `@State`, `@Prop`, `@Link`, `@Provide`, `@Consume`, `@StorageLink`, `@StorageProp`, `@Watch`, or when V1/V2 state-management choices are relevant inside code.
+description: Use for HarmonyOS/OpenHarmony ArkTS code work when Codex needs official documentation and samples to answer `.ets` syntax, state management, component semantics, migration, compile-error, API-usage, or legacy ArkUI maintenance questions, including ArkTS compile failures inside `ohosTest` test code. Trigger on `.ets` files, ArkTS decorators, `@kit` or `@ohos` APIs, HarmonyOS/OpenHarmony context, `@ComponentV2`, `@ObservedV2`, `@Trace`, `@Local`, `@Param`, `@Event`, `@LocalBuilder`, `@State`, `@Prop`, `@Link`, `@Provide`, `@Consume`, `@StorageLink`, `@StorageProp`, `@Watch`, or when V1/V2 state-management choices or strict ArkTS typing are relevant inside code.
 ---
 
 # HarmonyOS ArkTS V2 Assistant
@@ -15,6 +15,7 @@ Read [references/arkts-vs-ts.md](references/arkts-vs-ts.md) when the problem is 
 Read [references/ets-authoring-patterns.md](references/ets-authoring-patterns.md) when the task is about everyday `.ets` authoring patterns such as list rendering, conditional UI, builders, dialog usage, navigation, gestures, animation, or `.ets` versus `.ts` file boundaries.
 
 For empty-project scaffolding, project completion, directory layout, ability boundaries, or staged delivery planning, use `$harmonyos-project-builder`. For official SDK build, install, launch, packaging, signing, and device-debug workflows, use `$harmonyos-sdk-build-deploy`.
+For `ohosTest`, Test Kit wiring, UI test flows, or `aa test` execution details, use `$harmonyos-test-kit`.
 For HarmonyOS app design rules such as navigation structure, responsive or adaptive layout, multimodal component selection, visual guidance, or UI/UX review against official design specifications, use `$harmonyos-ui-ux-guidelines`.
 
 ## Source Priority
@@ -45,6 +46,7 @@ Put the task into one primary bucket:
 - Component split or MVVM architecture
 - Migration from TS, JS, or ArkUI V1 to V2
 - API usage for `@kit` or `@ohos`
+- ArkTS typing or nullability issue inside test code
 - Performance or rendering refresh bug
 
 ### 2. Pick the right source first
@@ -115,6 +117,7 @@ When suggesting code:
 - Move runtime coordination and state transitions into ViewModel or service layers when the codebase already follows that split
 - Verify whether a refresh issue is a state-observation problem before proposing copied state or manual sync
 - Keep UI composition and ArkUI-specific declarations in `.ets`; keep plain helper logic, DTOs, and non-UI utilities in `.ts` when the repository already follows that split
+- If the failing `.ets` file lives under `ohosTest` or imports `@kit.TestKit`, treat the problem as ArkTS-in-test code and coordinate with `$harmonyos-test-kit` rather than answering as ordinary business UI code
 - If the issue is really a design decision about page hierarchy, navigation, spacing systems, multimodal interaction behavior, or control choice, do not answer it as a pure `.ets` implementation problem; route it through `$harmonyos-ui-ux-guidelines`
 
 ## Decision Rules
@@ -149,6 +152,13 @@ Treat `@LocalBuilder` as a common refresh trap.
 - For Promise-based APIs, prefer `.catch((err: BusinessError) => ...)` when that matches official examples
 - For `try/catch`, use `catch (error)` and cast inside the block, such as `const err: BusinessError = error as BusinessError`
 - Prefer examples aligned with local official style guides rather than generic TypeScript advice
+
+### ArkTS typing in test code
+
+- In `.ets` test files, check whether the real error is ArkTS strict typing rather than a Test Kit runtime issue
+- Do not initialize a variable with `null` and later assign a stricter Test Kit type unless the union is explicit and valid in ArkTS
+- Prefer acting on the object returned by `waitForComponent` when the next step targets that same node, instead of re-finding it immediately
+- Treat secondary `findComponent` calls after waits as a possible source of nullability or timing bugs
 
 ## Typical Tasks
 
@@ -228,6 +238,7 @@ When you change code, prefer the lightest valid verification for the repository:
 
 - ArkTS compile or hvigor build first
 - Device or runtime verification only when the task requires it
+- If the affected file is under `ohosTest`, prefer compiling the `ohosTest` target rather than only the main app target
 
 ## Output Style
 
