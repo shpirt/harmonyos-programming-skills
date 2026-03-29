@@ -85,6 +85,28 @@ English version: [README.en.md](./README.en.md)
 
 ## 环境变量
 
+## 推荐本地参考仓库
+
+为了获得更稳定的官方文档检索和官方样例对照，建议在本地准备以下仓库：
+
+```sh
+git clone https://gitee.com/openharmony/docs.git
+git clone https://gitee.com/openharmony/applications_app_samples.git
+```
+
+然后将环境变量指向对应目录：
+
+```sh
+export HARMONYOS_DOCS_ROOT="/path/to/docs-repo-or-zh-cn"
+export HARMONYOS_SAMPLES_ROOT="/path/to/applications_app_samples"
+```
+
+说明：
+
+- `docs` 既可以把 `HARMONYOS_DOCS_ROOT` 指向仓库根目录，也可以直接指向其中的 `zh-cn/` 子目录
+- 如果没有本地 docs，skill 会降级到官方 HarmonyOS 文档站
+- 如果没有本地 samples，skill 仍可覆盖核心流程；只有在任务确实依赖官方样例时，才会损失部分效果
+
 这些 skill 不依赖硬编码本地路径。
 
 建议在 shell 启动配置中设置以下环境变量，然后重启你的编码助手：

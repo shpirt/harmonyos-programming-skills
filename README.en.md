@@ -86,6 +86,28 @@ Focus:
 
 ## Environment variables
 
+## Recommended local reference repositories
+
+For more reliable official-doc lookup and official sample comparison, it is recommended to keep these repositories locally:
+
+```sh
+git clone https://gitee.com/openharmony/docs.git
+git clone https://gitee.com/openharmony/applications_app_samples.git
+```
+
+Then point the environment variables at those directories:
+
+```sh
+export HARMONYOS_DOCS_ROOT="/path/to/docs-repo-or-zh-cn"
+export HARMONYOS_SAMPLES_ROOT="/path/to/applications_app_samples"
+```
+
+Notes:
+
+- for `docs`, `HARMONYOS_DOCS_ROOT` may point either to the repository root or directly to its `zh-cn/` subtree
+- if local docs are unavailable, the skills fall back to the official HarmonyOS documentation site
+- if local samples are unavailable, the skills still cover core workflows and only lose fidelity when a task genuinely depends on official sample inspection
+
 These skills do not rely on hardcoded local paths.
 
 Set these variables in your shell startup config, then restart your coding assistant:
