@@ -3,14 +3,15 @@
 Chinese version: [README.md](./README.md)  
 English version: this file
 
-This repository bundles four reusable HarmonyOS programming skills:
+This repository bundles five reusable HarmonyOS programming skills:
 
 - `harmonyos-project-builder`
 - `harmonyos-sdk-build-deploy`
 - `harmonyos-arkts-v2-assistant`
 - `harmonyos-test-kit`
+- `harmonyos-ui-ux-guidelines`
 
-They are designed to work together for HarmonyOS and OpenHarmony application development, covering project setup, official SDK build and deploy workflows, ArkTS authoring guidance, and official Test Kit testing workflows.
+They are designed to work together for HarmonyOS and OpenHarmony application development, covering project setup, official SDK build and deploy workflows, ArkTS authoring guidance, official Test Kit testing workflows, and HarmonyOS UI/UX design-guideline review.
 
 ## Included skills
 
@@ -70,6 +71,19 @@ Focus:
 - `ohosTest` / `testRunner` / `module.json5` wiring
 - `aa test` execution and filtering
 
+### `harmonyos-ui-ux-guidelines`
+
+Use when HarmonyOS or OpenHarmony app UI/UX decisions, design reviews, or implementation acceptance checks are needed.
+
+Focus:
+
+- application navigation structure
+- page structure and cross-device layout
+- adaptive and responsive design
+- multimodal input and interaction consistency
+- visual rules, motion rules, and control-state review
+- pre-implementation constraints and post-implementation review against official design guidance
+
 ## Environment variables
 
 These skills do not rely on hardcoded local paths.
@@ -103,15 +117,16 @@ Copy or sync these directories into the skills directory used by your coding ass
 - `harmonyos-sdk-build-deploy/`
 - `harmonyos-arkts-v2-assistant/`
 - `harmonyos-test-kit/`
+- `harmonyos-ui-ux-guidelines/`
 
 If your environment uses a central skills directory such as `$CODEX_HOME/skills`, place these skill folders there directly.
 
 ## Why one repository
 
-These four skills share:
+These five skills share:
 
 - cross-references between skills
 - the same environment-variable contract
 - a single HarmonyOS development workflow surface
 
-Keeping them together avoids version drift between project architecture guidance, SDK build and deploy guidance, ArkTS authoring guidance, and testing guidance.
+Keeping them together avoids version drift between project architecture guidance, SDK build and deploy guidance, ArkTS authoring guidance, testing guidance, and UI/UX design guidance.

@@ -14,6 +14,7 @@ Use official HarmonyOS docs and official samples before inventing structure. Pre
 Read [references/project-blueprint.md](references/project-blueprint.md) for the official build-first project shape, [references/system-client-pattern.md](references/system-client-pattern.md) for optional layering patterns that appear in official MVVM or system-capability samples, and [references/verification-checklist.md](references/verification-checklist.md) for staged completion criteria.
 
 For official SDK toolchain details such as `hdc`, `bm`, `aa`, packaging, signing, and device-side deploy flows, use `$harmonyos-sdk-build-deploy`. This skill should decide when build and deploy verification is required, not restate the full command-line tool reference.
+For page structure, navigation model, responsive or adaptive layout, multimodal interaction expectations, or HarmonyOS design-rule reviews, use `$harmonyos-ui-ux-guidelines`.
 
 When the task is true scaffolding, use `scripts/scaffold_harmonyos_layout.py` only after aligning the target layout with official docs or official sample structure.
 
@@ -108,6 +109,7 @@ For new UI work, default to ArkUI V2:
 - `@LocalBuilder` when local composition is necessary
 
 Keep pages focused on entry and composition. If the app grows beyond simple page logic, use official MVVM-style sample patterns before inventing a custom split.
+If the harder question is the HarmonyOS UX itself, such as whether the app should use bottom tabs, side navigation, layered navigation, adaptive layout, multimodal controls, or specific interaction states, defer that decision to `$harmonyos-ui-ux-guidelines` before finalizing the UI structure.
 
 ### 5. Define system boundaries before integration
 

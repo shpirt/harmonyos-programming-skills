@@ -3,14 +3,15 @@
 中文说明：当前文件  
 English version: [README.en.md](./README.en.md)
 
-这个仓库收录了四个可复用的 HarmonyOS / OpenHarmony 编程辅助 skill：
+这个仓库收录了五个可复用的 HarmonyOS / OpenHarmony 编程辅助 skill：
 
 - `harmonyos-project-builder`
 - `harmonyos-sdk-build-deploy`
 - `harmonyos-arkts-v2-assistant`
 - `harmonyos-test-kit`
+- `harmonyos-ui-ux-guidelines`
 
-它们被设计为一组协同工作的能力，分别覆盖项目搭建、官方 SDK 构建部署、ArkTS / `.ets` 编写指导，以及官方 Test Kit 测试工作流。
+它们被设计为一组协同工作的能力，分别覆盖项目搭建、官方 SDK 构建部署、ArkTS / `.ets` 编写指导、官方 Test Kit 测试工作流，以及 HarmonyOS 官方 UI/UX 设计规范审查。
 
 ## 包含的 skill
 
@@ -69,6 +70,19 @@ English version: [README.en.md](./README.en.md)
 - `ohosTest` / `testRunner` / `module.json5` 接线
 - `aa test` 命令行执行与筛选
 
+### `harmonyos-ui-ux-guidelines`
+
+适用于 HarmonyOS / OpenHarmony 应用的 UI/UX 设计决策、设计评审和实现验收场景。
+
+重点覆盖：
+
+- 应用导航结构
+- 页面结构与多设备布局
+- 自适应与响应式设计
+- 多模态输入与交互一致性
+- 视觉规范、动效规范与控件状态检查
+- 基于官方设计规范的实现前约束与实现后审查
+
 ## 环境变量
 
 这些 skill 不依赖硬编码本地路径。
@@ -102,15 +116,16 @@ export HARMONYOS_SAMPLES_ROOT="$HOME/playground/applications_app_samples"
 - `harmonyos-sdk-build-deploy/`
 - `harmonyos-arkts-v2-assistant/`
 - `harmonyos-test-kit/`
+- `harmonyos-ui-ux-guidelines/`
 
 如果你的环境使用集中式技能目录，例如 `$CODEX_HOME/skills`，直接把这些 skill 目录放进去即可。
 
 ## 为什么放在一个仓库里
 
-这四个 skill 共享：
+这五个 skill 共享：
 
 - 彼此之间的引用关系
 - 相同的环境变量约定
 - 一条完整的 HarmonyOS 开发工作流
 
-把它们放在同一个仓库里，可以避免项目架构指导、SDK 构建部署指导、ArkTS 编写指导、测试工作流指导之间发生版本漂移。
+把它们放在同一个仓库里，可以避免项目架构指导、SDK 构建部署指导、ArkTS 编写指导、测试工作流指导、以及 UI/UX 设计规范指导之间发生版本漂移。

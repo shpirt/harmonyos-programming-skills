@@ -1,0 +1,4 @@
+interface:
+  display_name: "HarmonyOS UI UX Guidelines"
+  short_description: "HarmonyOS app UI/UX design guidance"
+  default_prompt: "Use HarmonyOS app design guidelines to review or guide UI/UX decisions."

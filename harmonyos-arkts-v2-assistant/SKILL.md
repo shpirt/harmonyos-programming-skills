@@ -15,6 +15,7 @@ Read [references/arkts-vs-ts.md](references/arkts-vs-ts.md) when the problem is 
 Read [references/ets-authoring-patterns.md](references/ets-authoring-patterns.md) when the task is about everyday `.ets` authoring patterns such as list rendering, conditional UI, builders, dialog usage, navigation, gestures, animation, or `.ets` versus `.ts` file boundaries.
 
 For empty-project scaffolding, project completion, directory layout, ability boundaries, or staged delivery planning, use `$harmonyos-project-builder`. For official SDK build, install, launch, packaging, signing, and device-debug workflows, use `$harmonyos-sdk-build-deploy`.
+For HarmonyOS app design rules such as navigation structure, responsive or adaptive layout, multimodal component selection, visual guidance, or UI/UX review against official design specifications, use `$harmonyos-ui-ux-guidelines`.
 
 ## Source Priority
 
@@ -114,6 +115,7 @@ When suggesting code:
 - Move runtime coordination and state transitions into ViewModel or service layers when the codebase already follows that split
 - Verify whether a refresh issue is a state-observation problem before proposing copied state or manual sync
 - Keep UI composition and ArkUI-specific declarations in `.ets`; keep plain helper logic, DTOs, and non-UI utilities in `.ts` when the repository already follows that split
+- If the issue is really a design decision about page hierarchy, navigation, spacing systems, multimodal interaction behavior, or control choice, do not answer it as a pure `.ets` implementation problem; route it through `$harmonyos-ui-ux-guidelines`
 
 ## Decision Rules
 

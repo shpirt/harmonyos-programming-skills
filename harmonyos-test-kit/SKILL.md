@@ -15,6 +15,7 @@ Read [references/test-module-structure.md](references/test-module-structure.md) 
 For project scaffolding or app-completion work, use `$harmonyos-project-builder`.
 For general SDK build, packaging, install, launch, or device-debug workflows outside testing, use `$harmonyos-sdk-build-deploy`.
 For app code semantics inside `.ets` business code, use `$harmonyos-arkts-v2-assistant`.
+For official HarmonyOS UI/UX rules that define expected navigation behavior, control states, multimodal interaction, responsive layout intent, or design acceptance criteria for UI tests, use `$harmonyos-ui-ux-guidelines`.
 
 ## Source Priority
 
@@ -106,6 +107,7 @@ Do not create project-specific testing folders unless the repository already use
 - Use `ON` matchers and component lookup before coordinate-based fallback when possible
 - Use `waitForIdle` or `waitForComponent` after UI-triggering actions when the page needs time to settle
 - Do not invent repository-specific page-driver abstractions unless the codebase already has them
+- When deciding what UI behavior should be asserted, derive the expected navigation, state, and interaction behavior from the product or design basis first; if that basis should follow official HarmonyOS design rules, read `$harmonyos-ui-ux-guidelines` before finalizing the test intent
 
 ### Performance tests
 
